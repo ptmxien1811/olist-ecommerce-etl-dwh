@@ -1,0 +1,7 @@
+pandas
+pyarrow
+google-cloud-bigquery
+google-cloud-bigquery-storage
+db-dtypes
+pandas-gbq>=0.26.1
+pendulum

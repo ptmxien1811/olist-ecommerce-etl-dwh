@@ -1,0 +1,38 @@
+services:
+  airflow:
+    build:
+      context: .
+      dockerfile: airflow/Dockerfile
+
+    container_name: olist-airflow
+
+    command: standalone
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__CORE__DAGS_FOLDER: "/opt/airflow/dags"
+
+      GOOGLE_APPLICATION_CREDENTIALS: "/opt/airflow/gcp/application_default_credentials.json"
+
+      PYTHONPATH: "/opt/airflow/project:/opt/airflow/project/etl"
+
+    volumes:
+      - airflow_home:/opt/airflow
+
+      - ./airflow/dags:/opt/airflow/dags
+      - ./airflow/logs:/opt/airflow/logs
+
+      - ./:/opt/airflow/project
+
+      - type: bind
+        source: ${GCP_ADC_PATH}
+        target: /opt/airflow/gcp/application_default_credentials.json
+        read_only: true
+
+    restart: unless-stopped
+
+volumes:
+  airflow_home:

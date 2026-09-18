@@ -1,0 +1,107 @@
+{
+    "run_id": "20260913_170903_125865",
+    "issue_time": "2026-09-13 17:09:03.125890+00:00",
+    "pipeline_stage": "clean_validation",
+    "issue_types": [
+        {
+            "severity": "WARNING",
+            "issue_code": "payment_type_not_defined",
+            "source_table": "payments",
+            "row_count": 3,
+            "message": "Không xác định được phương thức thanh toán thực tế; giữ record để bảo toàn giao dịch.",
+            "disposition": "KEEP_AND_FLAG",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/payments__payment_type_not_defined.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "credit_card_installments_non_positive",
+            "source_table": "payments",
+            "row_count": 2,
+            "message": "credit_card có payment_installments <= 0, không phù hợp rule nghiệp vụ; không tự gán số kỳ.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_INSTALLMENT_ANALYSIS",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/payments__credit_card_installments_non_positive.parquet"
+        },
+        {
+            "severity": "WARNING",
+            "issue_code": "payment_value_zero",
+            "source_table": "payments",
+            "row_count": 9,
+            "message": "payment_value = 0 chưa đủ cơ sở kết luận sai; giữ để đối chiếu quan hệ đơn hàng/thanh toán.",
+            "disposition": "KEEP_AND_RECONCILE",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/payments__payment_value_zero.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "carrier_before_approved",
+            "source_table": "orders",
+            "row_count": 1359,
+            "message": "order_delivered_carrier_date xảy ra trước order_approved_at; không tự sửa timestamp.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_AFFECTED_TIME_KPI",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/orders__carrier_before_approved.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "customer_delivery_before_carrier",
+            "source_table": "orders",
+            "row_count": 23,
+            "message": "order_delivered_customer_date xảy ra trước order_delivered_carrier_date; không tự sửa timestamp.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_AFFECTED_TIME_KPI",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/orders__customer_delivery_before_carrier.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "delivered_missing_approved_at",
+            "source_table": "orders",
+            "row_count": 14,
+            "message": "Đơn delivered nhưng thiếu order_approved_at. Không điền ngày giả và không xóa order.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_AFFECTED_TIME_KPI",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/orders__delivered_missing_approved_at.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "delivered_missing_carrier_date",
+            "source_table": "orders",
+            "row_count": 2,
+            "message": "Đơn delivered nhưng thiếu order_delivered_carrier_date. Không điền ngày giả và không xóa order.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_AFFECTED_TIME_KPI",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/orders__delivered_missing_carrier_date.parquet"
+        },
+        {
+            "severity": "ERROR",
+            "issue_code": "delivered_missing_customer_date",
+            "source_table": "orders",
+            "row_count": 8,
+            "message": "Đơn delivered nhưng thiếu order_delivered_customer_date. Không điền ngày giả và không xóa order.",
+            "disposition": "KEEP_AND_EXCLUDE_FROM_AFFECTED_TIME_KPI",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/orders__delivered_missing_customer_date.parquet"
+        },
+        {
+            "severity": "WARNING",
+            "issue_code": "category_translation_unmatched",
+            "source_table": "products",
+            "row_count": 13,
+            "message": "Danh mục sản phẩm không tìm thấy bản dịch; product vẫn hợp lệ.",
+            "disposition": "KEEP_AND_USE_UNKNOWN_TRANSLATION",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/products__category_translation_unmatched.parquet"
+        },
+        {
+            "severity": "WARNING",
+            "issue_code": "customer_zip_unmatched_geolocation",
+            "source_table": "customers",
+            "row_count": 278,
+            "message": "ZIP khách hàng không được geolocation_lookup bao phủ; customer vẫn hợp lệ.",
+            "disposition": "KEEP_WITH_UNKNOWN_GEO",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/customers__customer_zip_unmatched_geolocation.parquet"
+        },
+        {
+            "severity": "WARNING",
+            "issue_code": "seller_zip_unmatched_geolocation",
+            "source_table": "sellers",
+            "row_count": 7,
+            "message": "ZIP người bán không được geolocation_lookup bao phủ; seller vẫn hợp lệ.",
+            "disposition": "KEEP_WITH_UNKNOWN_GEO",
+            "local_file": "/opt/airflow/project/data/error/20260913_170903_125865_quality_issues/sellers__seller_zip_unmatched_geolocation.parquet"
+        }
+    ],
+    "total_issue_records": 1718
+}
